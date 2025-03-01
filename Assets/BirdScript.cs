@@ -2,13 +2,14 @@ using UnityEngine;
 
 public class BirdScript : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+  
     public Rigidbody2D myRigidBody;
     public float flapStrength = 1;
     public LogicScript logic;
-    public bool birdIsAlive;
+    public bool birdIsAlive = true;
     public BoxCollider2D boundaries;
     public AudioSource jumpSound;
+    public GameObject explosionPrefab; 
 
     void Start()
     {   
@@ -52,11 +53,19 @@ public class BirdScript : MonoBehaviour
         }
     }
 
-    private void TriggerGameOver()
+     private void TriggerGameOver()
     {
         if (birdIsAlive)
         {
             birdIsAlive = false;
+            gameObject.SetActive(false); // Hide the bird
+
+            // Spawn explosion at the bird's position
+            if (explosionPrefab != null)
+            {
+                Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            }
+
             logic.gameOver();
         }
     }

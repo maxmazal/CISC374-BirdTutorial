@@ -12,9 +12,23 @@ public class LogicScript : MonoBehaviour
     public AudioSource scoreSound;  
     public AudioSource gameOverSound; 
 
+    public Text highScoreText;
+    public int highScore;
+
     public void Start()
     {
         gameIsOver = false;
+        highScore = PlayerPrefs.GetInt("highScoreText",0);
+        highScoreText.text = "High score: " + highScore.ToString();
+    }
+
+    public void checkHighScore(){
+        if(playerScore > highScore){
+            highScore = playerScore;
+            PlayerPrefs.SetInt("highScoreText",highScore);
+            highScoreText.text = "High score: " + highScore.ToString();
+        }
+
     }
 
     [ContextMenu("Increase Score")]
@@ -48,6 +62,7 @@ public class LogicScript : MonoBehaviour
             if (gameOverSound != null)
             {
                 gameOverSound.Play();
+                checkHighScore();
             }
         }
     }
